@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CctvCaptureController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('/app');
+    return view('input');
 });
+Route::get('capture', [CctvCaptureController::class, 'captureImage']);

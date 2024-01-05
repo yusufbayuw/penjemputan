@@ -18,7 +18,9 @@ class KelasResource extends Resource
 {
     protected static ?string $model = Kelas::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+
+    protected static ?int $navigationSort = 15;
 
     public static function form(Form $form): Form
     {
@@ -36,7 +38,7 @@ class KelasResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('unit.id')
+                Tables\Columns\TextColumn::make('unit.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nama')
@@ -61,7 +63,8 @@ class KelasResource extends Resource
                     ExportBulkAction::make(),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('unit_id','asc');
     }
 
     public static function getRelations(): array

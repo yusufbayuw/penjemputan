@@ -18,14 +18,19 @@ class SiswaResource extends Resource
 {
     protected static ?string $model = Siswa::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    protected static ?int $navigationSort = 10;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('id'),
+                Forms\Components\Select::make('unit_id')
+                    ->relationship('unit', 'nama'),
                 Forms\Components\Select::make('kelas_id')
-                    ->relationship('kelas', 'id'),
+                    ->relationship('kelas', 'nama'),
                 Forms\Components\Select::make('ortu_id')
                     ->relationship('ortu', 'name'),
                 Forms\Components\TextInput::make('nama')
