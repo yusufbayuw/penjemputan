@@ -17,11 +17,11 @@ class UniqueForToday implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $penjemputan = Penjemputan::whereDate('created_at', Carbon::today())
-            ->where($attribute, $value);
+            ->where(explode("." , $attribute)[1], $value);
         $count = $penjemputan->count();
         
         if ($count > 0) {
-            $fail($penjemputan->first()->ortu->siswa->nama.' sudah dijemput.');
+            $fail($penjemputan->first()->kartu->ortu->siswa[0]->nama.' sudah dijemput pada jam '. $penjemputan->first()->jam);
         }
     }
 }

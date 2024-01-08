@@ -2,21 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use Closure;
-use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Penjemputan;
 use App\Rules\UniqueForToday;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
-use Illuminate\Validation\Rules\Unique;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\CctvCaptureController;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PenjemputanResource\Pages;
@@ -43,14 +38,7 @@ class PenjemputanResource extends Resource
                 Forms\Components\TextInput::make('kartu_id')
                     ->autofocus()
                     ->rules([
-                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
-                            $penjemputan = Penjemputan::whereDate('created_at', Carbon::today())
-                                ->where($attribute, $value);
-                            $count = $penjemputan->count();
-                            if ($count > 0) {
-                                $fail($penjemputan->first()->ortu->siswa->nama.' sudah dijemput.');
-                            }
-                        },
+                        new UniqueForToday,
                     ]),
                 Forms\Components\Hidden::make('tanggal')
                     ->default(now())
@@ -59,7 +47,6 @@ class PenjemputanResource extends Resource
                     ->default(now())
                     ->dehydrateStateUsing(fn () => now()),
                 Forms\Components\Hidden::make('screenshoot')
-                    ->default(now())
                     ->dehydrateStateUsing(function () {
                         $capture = new CctvCaptureController();
                         return $capture->captureImage();

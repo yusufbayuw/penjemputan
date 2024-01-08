@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\PenjemputanResource\Widgets;
 
-use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\Penjemputan;
 use Filament\Widgets\Widget;
@@ -12,6 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\CctvCaptureController;
+use App\Rules\UniqueForToday;
 use Filament\Forms\Concerns\InteractsWithForms;
 
 class CreatePenjemputanWidget extends Widget implements HasForms
@@ -37,7 +37,10 @@ class CreatePenjemputanWidget extends Widget implements HasForms
                 ->validationMessages([
                     'exists' => 'Kartu tidak terdaftar',
                 ])
-                ->exists('kartus', 'id'),
+                ->exists('kartus', 'id')
+                ->rules([
+                    new UniqueForToday,
+                ]),
             Hidden::make('tanggal')
                 ->default(now())
                 ->dehydrateStateUsing(fn () => now()),
@@ -45,7 +48,6 @@ class CreatePenjemputanWidget extends Widget implements HasForms
                 ->default(now())
                 ->dehydrateStateUsing(fn () => now()),
             Hidden::make('screenshoot')
-                ->default(now())
                 ->dehydrateStateUsing(function () {
                     $capture = new CctvCaptureController();
                     return $capture->captureImage();

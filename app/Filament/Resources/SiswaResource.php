@@ -26,7 +26,6 @@ class SiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('id'),
                 Forms\Components\Select::make('unit_id')
                     ->relationship('unit', 'nama')->required(),
                 Forms\Components\Select::make('kelas_id')
@@ -35,6 +34,7 @@ class SiswaResource extends Resource
                     ->relationship('ortu', 'name')->required(),
                 Forms\Components\TextInput::make('nama')
                     ->required()
+                    ->dehydrateStateUsing(fn ($state) => ucwords(strtolower($state)))
                     ->maxLength(255),
                 Forms\Components\Toggle::make('status')
                     ->required(),

@@ -28,6 +28,7 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->dehydrateStateUsing(fn ($state) => ucwords(strtolower($state)))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
