@@ -27,7 +27,8 @@ class KelasResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('unit_id')
-                    ->relationship('unit', 'nama', fn (Builder $query) => $query->orderBy('id', 'asc')),
+                    ->relationship('unit', 'nama', fn (Builder $query) => $query->orderBy('id', 'asc'))
+                    ->required(),
                 Forms\Components\TextInput::make('nama')
                     ->required()
                     ->maxLength(255),

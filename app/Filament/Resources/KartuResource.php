@@ -13,6 +13,7 @@ use App\Filament\Resources\KartuResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\KartuResource\RelationManagers;
+use Filament\Forms\Get;
 
 class KartuResource extends Resource
 {
@@ -26,10 +27,13 @@ class KartuResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Hidden::make('id')->dehydrateStateUsing(fn (Get $get) => $get('nomor')),
                 Forms\Components\Select::make('ortu_id')
-                    ->relationship('ortu', 'name'),
+                    ->relationship('ortu', 'name')
+                    ->required(),
                 Forms\Components\TextInput::make('nomor')
                     ->required()
+                    ->live(debounce:500)
                     ->maxLength(255),
             ]);
     }
@@ -41,7 +45,8 @@ class KartuResource extends Resource
                 Tables\Columns\TextColumn::make('ortu.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('nomor')
+                Tables\Columns\TextColumn::make('id')
+                    ->label('Nomor')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

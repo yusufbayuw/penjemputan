@@ -13,8 +13,8 @@ class CctvCaptureController extends Controller
         $password = 'hik12345';
         $imageUrl = 'http://172.10.10.212/ISAPI/Streaming/channels/101/picture';
 
-        //$path = 'images/capture/'.date('Ym').'/image_'.time().'.jpg';
-        $path = 'image_'.time().'.jpg';
+        $path = 'capture/'.date('Ym').'/image_'.time().'.jpg';
+        //$path = 'image_'.time().'.jpg';
         $localFilePath = public_path($path);
 
         $ch = curl_init();

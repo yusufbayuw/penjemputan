@@ -2,22 +2,27 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PenjemputanResource\Pages;
-use App\Filament\Resources\PenjemputanResource\RelationManagers;
-use App\Filament\Resources\PenjemputanResource\Widgets\CreatePenjemputanWidget;
-use App\Http\Controllers\CctvCaptureController;
-use App\Models\Penjemputan;
+use Closure;
+use Carbon\Carbon;
 use Filament\Forms;
+use Filament\Tables;
+use Filament\Forms\Get;
 use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Models\Penjemputan;
+use App\Rules\UniqueForToday;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
-use Filament\Tables;
+use Illuminate\Validation\Rules\Unique;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
-use Filament\Tables\Columns\TextColumn\TextColumnSize;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use App\Http\Controllers\CctvCaptureController;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PenjemputanResource\Pages;
+use Filament\Tables\Columns\TextColumn\TextColumnSize;
+use App\Filament\Resources\PenjemputanResource\RelationManagers;
+use App\Filament\Resources\PenjemputanResource\Widgets\CreatePenjemputanWidget;
 
 class PenjemputanResource extends Resource
 {
@@ -30,12 +35,23 @@ class PenjemputanResource extends Resource
     protected static ?string $slug = 'penjemputan';
 
     protected static ?int $navigationSort = 5;
-    
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('kartu_id')->autofocus(),
+                Forms\Components\TextInput::make('kartu_id')
+                    ->autofocus()
+                    ->rules([
+                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                            $penjemputan = Penjemputan::whereDate('created_at', Carbon::today())
+                                ->where($attribute, $value);
+                            $count = $penjemputan->count();
+                            if ($count > 0) {
+                                $fail($penjemputan->first()->ortu->siswa->nama.' sudah dijemput.');
+                            }
+                        },
+                    ]),
                 Forms\Components\Hidden::make('tanggal')
                     ->default(now())
                     ->dehydrateStateUsing(fn () => now()),
@@ -76,7 +92,7 @@ class PenjemputanResource extends Resource
                             ->sortable()->size(TextColumnSize::ExtraSmall)
                             ->toggleable(isToggledHiddenByDefault: true),
                     ]),
-                ])->from('lg'),
+                ]),
             ])
             ->filters([
                 //

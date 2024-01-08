@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Pilihan;
-use App\Observers\PilihanObserver;
+use App\Models\Penjemputan;
+use App\Observers\PenjemputanObserver;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -27,7 +27,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //Pilihan::observe(PilihanObserver::class);
+        Penjemputan::observe(PenjemputanObserver::class);
     }
 
     /**

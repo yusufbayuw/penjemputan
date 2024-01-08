@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Models\Pilihan;
 use App\Models\User;
 
 class UserObserver

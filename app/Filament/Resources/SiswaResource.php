@@ -28,11 +28,11 @@ class SiswaResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('id'),
                 Forms\Components\Select::make('unit_id')
-                    ->relationship('unit', 'nama'),
+                    ->relationship('unit', 'nama')->required(),
                 Forms\Components\Select::make('kelas_id')
                     ->relationship('kelas', 'nama'),
                 Forms\Components\Select::make('ortu_id')
-                    ->relationship('ortu', 'name'),
+                    ->relationship('ortu', 'name')->required(),
                 Forms\Components\TextInput::make('nama')
                     ->required()
                     ->maxLength(255),

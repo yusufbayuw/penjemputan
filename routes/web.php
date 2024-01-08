@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CctvCaptureController;
+use App\Livewire\LandingPage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('input');
-});
+Route::get('/', LandingPage::class);
 Route::get('capture', [CctvCaptureController::class, 'captureImage']);

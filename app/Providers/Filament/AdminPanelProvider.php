@@ -29,8 +29,8 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->id('app')
-            ->path('app')
+            ->id('admin')
+            ->path('admin')
             ->login()
             ->darkMode(false)
             ->brandName('Sistem Penjemputan')
