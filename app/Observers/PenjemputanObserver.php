@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Penjemputan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class PenjemputanObserver
 {
@@ -28,9 +29,9 @@ class PenjemputanObserver
      */
     public function deleted(Penjemputan $penjemputan): void
     {
-        $file = public_path(str_replace(env('APP_URL'),'',$penjemputan->screenshoot));
-        if (file_exists($file)) { //(File::exists($file)) {
-            unlink($file); //File::delete($file);
+        $path = $penjemputan->screenshoot;
+        if ($path && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
         }
     }
 

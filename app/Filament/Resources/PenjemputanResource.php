@@ -47,9 +47,13 @@ class PenjemputanResource extends Resource
                     ->default(now())
                     ->dehydrateStateUsing(fn () => now()),
                 Forms\Components\Hidden::make('screenshoot')
-                    ->dehydrateStateUsing(function () {
-                        $capture = new CctvCaptureController();
-                        return $capture->captureImage();
+                    ->dehydrateStateUsing(function (Penjemputan $record) {
+                        if ($record->screenshoot) {
+                            //
+                        } else {
+                            $capture = new CctvCaptureController();
+                            return $capture->captureImage();
+                        }
                     }),
             ]);
     }
