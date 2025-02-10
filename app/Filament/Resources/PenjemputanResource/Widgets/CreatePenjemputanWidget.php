@@ -49,6 +49,7 @@ class CreatePenjemputanWidget extends Widget implements HasForms
                 ->dehydrateStateUsing(fn () => now()),
             Hidden::make('screenshoot')
                 ->dehydrateStateUsing(function (Penjemputan $record) {
+                    dd($record);
                     if ($record->screenshoot) {
                         //
                     } else {
