@@ -22,6 +22,7 @@ use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin;
 use Swis\Filament\Backgrounds\ImageProviders\Triangles;
 
 class AdminPanelProvider extends PanelProvider
@@ -80,6 +81,7 @@ class AdminPanelProvider extends PanelProvider
                         Triangles::make()
                     )
                     ->showAttribution(false),
+                SimpleLightBoxPlugin::make()
             ]);
     }
 }

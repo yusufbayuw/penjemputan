@@ -77,7 +77,7 @@ class PenjemputanResource extends Resource
                     ]),
                     Stack::make([
                         Tables\Columns\ImageColumn::make('screenshoot')
-                            ->searchable()->height(90)->width(160),
+                            ->simpleLightbox(),
                         Tables\Columns\TextColumn::make('created_at')
                             ->dateTime()
                             ->sortable()->size(TextColumnSize::ExtraSmall)
