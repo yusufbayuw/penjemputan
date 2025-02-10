@@ -43,13 +43,12 @@ class CreatePenjemputanWidget extends Widget implements HasForms
                 ]),
             Hidden::make('tanggal')
                 ->default(now())
-                ->dehydrateStateUsing(fn () => now()),
+                ->dehydrateStateUsing(fn() => now()),
             Hidden::make('jam')
                 ->default(now())
-                ->dehydrateStateUsing(fn () => now()),
+                ->dehydrateStateUsing(fn() => now()),
             Hidden::make('screenshoot')
                 ->dehydrateStateUsing(function (Penjemputan $record) {
-                    dd($record);
                     if ($record->screenshoot) {
                         //
                     } else {
@@ -69,7 +68,8 @@ class CreatePenjemputanWidget extends Widget implements HasForms
 
     protected function onValidationError(ValidationException $exception): void
     {
-        $this->reset('data.kartu_id');
+        $this->data['kartu_id'] = null; // Reset hanya kartu_id
+        $this->form->fill($this->data); // Pastikan form di-refresh
         Notification::make('errorval')
             ->title($exception->getMessage())
             ->danger()
